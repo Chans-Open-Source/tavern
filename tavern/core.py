@@ -143,6 +143,10 @@ def run_test(in_file, test_spec, global_cfg):
 
     logger.info("Running test : %s", test_block_name)
 
+    hook = getattr(test_block_config["tavern_internal"]["pytest_hook_caller"], "pytest_tavern_beta_before_every_block_run")
+    if hook is not None:
+        hook(spec=test_spec)
+
     with ExitStack() as stack:
         sessions = get_extra_sessions(test_spec, test_block_config)
 
@@ -175,6 +179,9 @@ def run_test(in_file, test_spec, global_cfg):
             run_stage_with_retries = retry(stage, test_block_config)(run_stage)
 
             try:
+                hook = getattr(test_block_config["tavern_internal"]["pytest_hook_caller"], "pytest_tavern_beta_before_every_stage_run")
+                if hook is not None:
+                    hook(stage=stage, spec=test_spec)
                 run_stage_with_retries(sessions, stage, test_block_config)
             except exceptions.TavernException as e:
                 e.stage = stage
