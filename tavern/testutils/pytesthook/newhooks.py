@@ -34,6 +34,31 @@ def pytest_tavern_beta_after_every_response(expected, response):
     """
 
 
+def pytest_tavern_beta_before_block_run(spec):
+    """Called before every test block run
+
+    Args:
+        spec (object): Test block spec object.
+    """
+
+
+def pytest_tavern_beta_before_stage_run(stage, spec):
+    """Called before every test stage run
+
+    Args:
+        stage (object): Test stage object.
+        spec (object): Test block spec object.
+    """
+
+
+def pytest_tavern_beta_before_request(request):
+    """Called before every _request_ -including HTTP
+
+    Args:
+        request (object): Request arguments object.
+    """
+
+
 def call_hook(test_block_config, hookname, **kwargs):
     """Utility to call the hooks"""
     try:
