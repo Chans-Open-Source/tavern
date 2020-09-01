@@ -34,7 +34,7 @@ def pytest_tavern_beta_after_every_response(expected, response):
     """
 
 
-def pytest_tavern_beta_before_block_run(spec):
+def pytest_tavern_beta_before_every_block_run(spec):
     """Called before every test block run
 
     Args:
@@ -42,7 +42,7 @@ def pytest_tavern_beta_before_block_run(spec):
     """
 
 
-def pytest_tavern_beta_before_stage_run(stage, spec):
+def pytest_tavern_beta_before_every_stage_run(stage, spec):
     """Called before every test stage run
 
     Args:
@@ -51,7 +51,7 @@ def pytest_tavern_beta_before_stage_run(stage, spec):
     """
 
 
-def pytest_tavern_beta_before_request(request):
+def pytest_tavern_beta_before_every_request(request):
     """Called before every _request_ -including HTTP
 
     Args:
