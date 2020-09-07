@@ -169,6 +169,12 @@ def run_test(in_file, test_spec, global_cfg):
         for stage in test_spec["stages"]:
             if stage.get("skip"):
                 continue
+            # Skip stage if skipif is set and skipif result is True
+            if "skipif" in stage:
+                skipif = format_keys(stage.get("skipif"), test_block_config["variables"])
+                skip_result = eval(skipif)
+                if skip_result:
+                    continue
             if has_only and not getonly(stage):
                 continue
 

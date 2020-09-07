@@ -48,6 +48,10 @@ schema;stage:
       func: bool_variable
       required: false
 
+    skipif:
+      type: any
+      required: false
+
     only:
       type: any
       func: bool_variable
