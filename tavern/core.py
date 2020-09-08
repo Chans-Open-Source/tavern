@@ -7,6 +7,7 @@ import os
 import pytest
 
 from tavern.schemas.files import wrapfile
+from tavern.schemas.extensions import get_wrapped_create_function
 from tavern.util.strict_util import StrictLevel
 
 from .plugins import get_expected, get_extra_sessions, get_request_type, get_verifiers
@@ -172,9 +173,19 @@ def run_test(in_file, test_spec, global_cfg):
             # Skip stage if skipif is set and skipif result is True
             if "skipif" in stage:
                 skipif = format_keys(stage.get("skipif"), test_block_config["variables"])
-                skip_result = eval(skipif)
-                if skip_result:
-                    continue
+                if isinstance(skipif, str):
+                    skip_result = eval(skipif)
+                    if skip_result:
+                        continue
+                else:
+                    try:
+                        func = get_wrapped_create_function(skipif.pop("$ext"))
+                    except (KeyError, TypeError, AttributeError):
+                        pass
+                    else:
+                        func_result = func()
+                        if func_result:
+                            continue
             if has_only and not getonly(stage):
                 continue
 
